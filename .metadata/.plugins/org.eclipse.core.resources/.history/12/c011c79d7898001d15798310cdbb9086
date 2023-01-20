@@ -1,0 +1,19 @@
+
+public class Magic8Ball {
+	String [] answers = new String[] {
+			"Yes",
+			"No",
+			"The world is your oyster!",
+			"Ask again later",
+			"Maybe in another life",
+			"Without a doubt",
+			"Nope no way",
+			"Outlook good",
+			"A big no",
+			"Real hazy"
+	};
+	
+	public static void main(String[] args) {
+		System.out.println("")	
+	}
+}

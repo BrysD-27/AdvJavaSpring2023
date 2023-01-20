@@ -26,11 +26,11 @@ public class Magic8Ball {
 			usersQuestion = input.nextLine();
 			
 			if(usersQuestion.isEmpty()) {
-				System.out.println("Thanks for playing!" + "\n" + "Number of questions answered: " + numOfQuestionsAnswered);
+				System.out.println("Number of questions answered: " + numOfQuestionsAnswered);
 				System.exit(0);
 			}
 			randomAnswer();
-			System.out.print("Ask another question: " + "\n");
+			System.out.print("Ask another question: ");
 		}
 	}
 	
@@ -39,6 +39,6 @@ public class Magic8Ball {
 		Random rand = new Random();
 		int randomNum = rand.nextInt(10);
 		
-		System.out.println("\n" + answers[randomNum] + "\n");
+		System.out.println(answers[randomNum] + "\n");
 	}
 }
