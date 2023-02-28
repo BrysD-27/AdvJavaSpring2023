@@ -1,3 +1,10 @@
+/**
+ * Author:	Bryson Davis
+ * Class:   CS-2463-TW01S.23SP
+ * Date:	01/21/23
+ * File:	Magic 8 Ball
+ * Description:	Magic 8 Ball
+ */
 import java.util.Random;
 import java.util.Scanner;
 
@@ -30,7 +37,7 @@ public class Magic8Ball {
 				System.exit(0);
 			}
 			randomAnswer();
-			System.out.print("Ask another question: " + "\n");
+			System.out.print("Ask another question: ");
 		}
 	}
 	
