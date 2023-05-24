@@ -1,124 +1,89 @@
+// for simplicity this demo uses only a portion of our Person hierarchy
+// Person is constructed with just a first and last name
+// OCCCPerson (the child of Person in this demo) is a first name, last name, and ID number (string)
 
-import java.io.BufferedReader;
-
-import java.io.File;
-
-import java.io.FileNotFoundException;
-
-import java.io.FileReader;
-
-import java.io.IOException;
+import java.util.*;
+import java.io.*;
 
 public class Test {
-	
-		public static void main(String[] args) throws IOException {
+  public static void main(String [] args){
 
-			// Path to file
+    // Make an array (for simplicity) of Person
+    // note that since OCCCPerson is a Person, it holds those as well
 
-			File file = new File("D:\\Documents\\AdvJavaSpring2023\\Puzzle Reader\\src\\palindromes.txt");
+    Person [] p = new Person[6];
+    
+    p[0] = new Person("George", "Washington");
+    p[1] = new Person("Abraham", "Lincoln");
+    p[2] = new OCCCPerson("Grover", "Cleveland", "1122", "B00001234");
+    p[3] = new OCCCPerson("Harry", "Truman", "2233", "B00003323");
+    
+    Person p4 = new Person("James", "Carter");
+    OCCCPerson p5 = new OCCCPerson("Ronald", "Reagan", "3311", "B00004234");
 
-			// read the file
+    p[4] = p4;
+    p[5] = p5;
 
-			FileReader fr = new FileReader(file);
+    // Display them on the screen to make sure it all worked
 
-			// create a character input stream
+    for(int i = 0; i < p.length; ++i){
+      System.out.println(p[i].toString());
+    }
 
-			BufferedReader br = new BufferedReader(fr);
+    // Now dump them to a file and read them back in
 
-			// construct a string buffer
+    System.out.print("Please enter file name: ");
+    Scanner s = new Scanner(System.in);
+    String fileName = s.next();
+    
+    System.out.println("Dumping objects to " + fileName + "...");
 
-			StringBuffer sb = new StringBuffer();
+    try{
+      FileOutputStream   fout = new FileOutputStream(fileName);
+      ObjectOutputStream oout = new ObjectOutputStream(fout);
 
-			String line;
+      for(int i = 0; i < p.length; ++i){
+        oout.writeObject(p[i]);
+      }
+    }
+    catch(IOException e){
+      System.out.println("OH NO BAD THINGS HAPPEN");
+      System.out.println(e.toString());
+    }
 
-			// create counters
+    System.out.println("Now we read them back in...");
 
-			int palindrome = 0;
+    Person [] q = new Person[6];
 
-			int strictPalindrome = 0;
+    try{
+      FileInputStream   fin = new FileInputStream(fileName);
+      ObjectInputStream oin = new ObjectInputStream(fin);
+      Object o;
+      for(int i = 0; i < q.length; ++i){
+        o = oin.readObject();
+        System.out.println(o.getClass());
 
-			int notPalindrome = 0;
+        // here we have to figure out what kind of Person we have and write them to the array with the appropriate type cast.
+        // for code like this always start at the bottom of the inheritance chain and work your way up
 
-			// loop until last line in file
+        if (o.getClass().equals(OCCCPerson.class)){
+          System.out.println("Got me an OCCC Person");
+          q[i] = (OCCCPerson) o;
+        }
+        else{
+          System.out.println("This is a Person");
+          q[i] = (Person) o;
+        }
+      }
+    }
+    catch(Exception e){
+      System.out.println("INPUT ERROR");
+      System.out.println(e.toString());
+    }
 
-			while ((line = br.readLine()) != null) {
-
-			// check if string is strict palindrome
-
-			if (isStrictPalindrome(line))
-
-			// if yes, increment counter
-
-			strictPalindrome++;
-
-			// check if string is palindrome but not strict
-
-			else if (isPalindrome(line))
-
-			// if yes, increment counter
-
-			palindrome++;
-
-			else
-
-			// otherwise increase counter for not palindrome
-
-			notPalindrome++;
-
-			}
-
-			fr.close(); // closes the stream and release the resources
-
-			System.out.println(palindrome + " strings are palindrome but not strict.");
-
-			System.out.println(strictPalindrome + " strings are strict palindrome.");
-
-			System.out.println(notPalindrome + " strings are not palindrome.");
-
-			}
-
-			private static boolean isStrictPalindrome(String line) {
-
-			// return if reverse of string
-
-			// and original string matches with same cases
-
-			return line.equals(reverse(line));
-
-			}
-
-			private static boolean isPalindrome(String line) {
-
-			// return if reverse of string
-
-			// and original string matches ignoring same cases
-
-			return line.equalsIgnoreCase(reverse(line));
-
-			}
-
-			// this method will reverse a string
-
-			public static String reverse(final String line) {
-
-			final StringBuilder builder = new StringBuilder(line);
-
-			for (int i = 0; i < builder.length() / 2; i++) {
-
-			final char tmp = builder.charAt(i);
-
-			final int otherEnd = builder.length() - i - 1;
-
-			builder.setCharAt(i, builder.charAt(otherEnd));
-
-			builder.setCharAt(otherEnd, tmp);
-
-			}
-
-			// return reversed string
-
-			return builder.toString();
-
-			}
-
+    for(int i = 0; i < q.length; ++i){
+      System.out.println(q[i].toString());
+    }
+  }
 }
+    
